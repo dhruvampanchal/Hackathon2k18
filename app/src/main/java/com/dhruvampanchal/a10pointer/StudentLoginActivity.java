@@ -51,6 +51,7 @@ public class StudentLoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        mSignIn = (Button) findViewById(R.id.signinbtn);
 
         //Checking Email format validity in if statement.
 
@@ -63,8 +64,8 @@ public class StudentLoginActivity extends AppCompatActivity {
                 mPassword = (EditText) findViewById(R.id.userpassword);
                 mSignIn = (Button) findViewById(R.id.signinbtn);
 
-                String strEmailAddress = mEmailAddress.toString();
-                String strPassword = mPassword.toString();
+                String strEmailAddress = mEmailAddress.getText().toString().trim();
+                String strPassword = mPassword.getText().toString().trim();
 
                 mAuth.signInWithEmailAndPassword(strEmailAddress, strPassword)
                         .addOnCompleteListener(StudentLoginActivity.this, new OnCompleteListener<AuthResult>() {

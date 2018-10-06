@@ -54,8 +54,8 @@ public class TeacherLoginActivity extends AppCompatActivity {
                 mSignIn = (Button) findViewById(R.id.signinbtn);
                 //Checking Email format validity in if statement.
 
-                String strEmailAddress = mEmailAddress.toString();
-                String strPassword = mPassword.toString();
+                String strEmailAddress = mEmailAddress.getText().toString().trim();
+                String strPassword = mPassword.getText().toString().trim();
 
                 mAuth.signInWithEmailAndPassword(strEmailAddress, strPassword)
                         .addOnCompleteListener(TeacherLoginActivity.this, new OnCompleteListener<AuthResult>() {

@@ -37,5 +37,13 @@ public class FirstActivity extends AppCompatActivity {
                 startActivity(TeacherIntent);
             }
         });
+
+        SignUpLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent SignUpIntent = new Intent(FirstActivity.this, SignUpActivity.class);
+                startActivity(SignUpIntent);
+            }
+        });
     }
 }

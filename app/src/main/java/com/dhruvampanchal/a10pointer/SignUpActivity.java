@@ -30,7 +30,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-
+        mSignUpButton = (Button) findViewById(R.id.signupbtn);
 
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,8 +41,8 @@ public class SignUpActivity extends AppCompatActivity {
                 SignUpPassword = (EditText) findViewById(R.id.userpasswordsignup);
                 mSignUpButton = (Button) findViewById(R.id.signupbtn);
 
-                String strSignUpEmail = SignUpEmail.toString();
-                String strSignUpPassword = SignUpPassword.toString();
+                String strSignUpEmail = SignUpEmail.getText().toString();
+                String strSignUpPassword = SignUpPassword.getText().toString();
 
                 mAuth = FirebaseAuth.getInstance();
                 mAuth.createUserWithEmailAndPassword(strSignUpEmail, strSignUpPassword)
