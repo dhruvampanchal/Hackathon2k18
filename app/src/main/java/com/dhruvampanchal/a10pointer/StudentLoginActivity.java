@@ -51,16 +51,22 @@ public class StudentLoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        mEmailAddress = (EditText) findViewById(R.id.useremail);
-        mPassword = (EditText) findViewById(R.id.userpassword);
-        mSignIn = (Button) findViewById(R.id.signinbtn);
+
         //Checking Email format validity in if statement.
+
 
         mSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                mAuth.signInWithEmailAndPassword(mEmailAddress, mPassword)
+                mEmailAddress = (EditText) findViewById(R.id.useremail);
+                mPassword = (EditText) findViewById(R.id.userpassword);
+                mSignIn = (Button) findViewById(R.id.signinbtn);
+
+                String strEmailAddress = mEmailAddress.toString();
+                String strPassword = mPassword.toString();
+
+                mAuth.signInWithEmailAndPassword(strEmailAddress, strPassword)
                         .addOnCompleteListener(StudentLoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {

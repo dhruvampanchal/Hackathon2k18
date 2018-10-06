@@ -43,17 +43,22 @@ public class TeacherLoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        mEmailAddress = (EditText) findViewById(R.id.useremail);
-        mPassword = (EditText) findViewById(R.id.userpassword);
-        mSignIn = (Button) findViewById(R.id.signinbtn);
-        //Checking Email format validity in if statement.
+
 
         mSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                mAuth.signInWithEmailAndPassword(mEmailAddress, mPassword)
-                        .addOnCompleteListener(StudentLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                mEmailAddress = (EditText) findViewById(R.id.useremail);
+                mPassword = (EditText) findViewById(R.id.userpassword);
+                mSignIn = (Button) findViewById(R.id.signinbtn);
+                //Checking Email format validity in if statement.
+
+                String strEmailAddress = mEmailAddress.toString();
+                String strPassword = mPassword.toString();
+
+                mAuth.signInWithEmailAndPassword(strEmailAddress, strPassword)
+                        .addOnCompleteListener(TeacherLoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
@@ -64,7 +69,7 @@ public class TeacherLoginActivity extends AppCompatActivity {
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                    Toast.makeText(StudentLoginActivity.this, "Authentication failed.",
+                                    Toast.makeText(TeacherLoginActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
 
