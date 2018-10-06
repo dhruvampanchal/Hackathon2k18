@@ -10,14 +10,6 @@
         android:textSize="25sp"
         android:text="Test"
         android:id="@+id/QuestionText"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/QuestionText"
-        android:layout_marginTop="15dp"
-        android:textSize="15sp"
-        android:text="Test"
-        android:id="@+id/NameText"/>
 
 
 </RelativeLayout>

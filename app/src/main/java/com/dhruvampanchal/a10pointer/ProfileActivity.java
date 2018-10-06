@@ -1,9 +1,11 @@
 package com.dhruvampanchal.a10pointer;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -27,6 +29,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (id == R.id.profilemenuaddsubject)
         {
             //TODO:Add a Subject to User Profile
+
         }
 
         if (id==R.id.profilemenuremovesubject)
@@ -35,5 +38,11 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void SendtoDiffAct(View view)
+    {
+        Intent intent = new Intent(ProfileActivity.this, QuestionSection.class);
+        startActivity(intent);
     }
 }

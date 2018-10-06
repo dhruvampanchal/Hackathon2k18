@@ -10,27 +10,33 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuestionSection extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private RelativeLayout[] myDataset;
+    private ArrayList<String> myDataset = new ArrayList<String>();
     private DatabaseReference myRef;
-    private ArrayList<String> mUsername = new ArrayList<>();
-
+    private ArrayList<String> mUsername = new ArrayList<String>();
+    private ArrayList<String> mQuestions = new ArrayList<String>();
+    private ListView QuestionsView;
+    private String Question;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,13 +44,24 @@ public class QuestionSection extends AppCompatActivity {
 
         //TODO:Add info into DataSet.
 
-        myRef = FirebaseDatabase.getInstance().getReference().child(subjects).child(physics);
+        myRef = FirebaseDatabase.getInstance().getReference().child("subjects").child("physics");
 
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String value = dataSnapshot.getValue(String.class);
-                mUsername.add(value);
+                int i = 0;
+                Toast.makeText(QuestionSection.this, dataSnapshot.getKey().toString(), Toast.LENGTH_SHORT).show();
+                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    Toast.makeText(QuestionSection.this, "Inside Child!", Toast.LENGTH_SHORT).show();
+                    Log.i("CHILD ACTIVITY", child.getKey().toString());
+
+
+                    myDataset.add(child.getValue().toString());
+                    Log.i("CHILD Value", child.getValue().toString());
+                    Toast.makeText(QuestionSection.this, "Question Added!", Toast.LENGTH_SHORT).show();
+                    Log.i("myDataSet",myDataset.get(i).toString());
+                    i = i+1;
+                }
             }
 
             @Override
@@ -66,9 +83,14 @@ public class QuestionSection extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        })
+        });
 
+        QuestionsView = (ListView) findViewById(R.id.QList);
+        final ArrayAdapter arrayAdapter = new ArrayAdapter<String>(
+                this,R.layout.activity_question_section, myDataset);
+        QuestionsView.setAdapter(arrayAdapter);
 
+        /*
         mRecyclerView = (RecyclerView) findViewById(R.id.QuestionsView);
 
         //Setting fixed size of Recycler View
@@ -81,55 +103,11 @@ public class QuestionSection extends AppCompatActivity {
         //specify an Adapter
         mAdapter = new MyAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
+        */
+
+
+
     }
 
-    public RelativeLayout RelativeLayoutProducer(String Question, String Name){
-
-        RelativeLayout TempLayout = (RelativeLayout) findViewById(R.id.RecyclerComponent);
-        TextView QuestionText = (TextView) findViewById(R.id.QuestionText);
-        TextView NameText = (TextView) findViewById(R.id.NameText);
-
-        QuestionText.setText(Question);
-        NameText.setText(Name);
-    }
 }
-    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-        private RelativeLayout[] mDataset;
 
-        public static class MyViewHolder extends RecyclerView.ViewHolder {
-            public RelativeLayout mTextView;
-
-            public MyViewHolder(RelativeLayout v) {
-                super(v);
-                mTextView = v;
-            }
-        }
-
-        public MyAdapter(RelativeLayout[] myDataset) {
-            mDataset = myDataset;
-        }
-
-        @NonNull
-        @Override
-        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-            //create a new view
-            RelativeLayout v = (RelativeLayout) LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recyclercomponent, parent, false);
-
-            MyViewHolder vh = new MyViewHolder(v);
-            return vh;
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            // - get element from your dataset at this position
-            // - replace the contents of the view with that element
-            holder.mTextView = mDataset[position];
-        }
-
-        @Override
-        public int getItemCount() {
-            return mDataset.length;
-        }
-    }
