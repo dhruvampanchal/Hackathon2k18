@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -37,6 +38,7 @@ public class QuestionSection extends AppCompatActivity {
     private DatabaseReference myRef;
     private ListView QuestionsView;
     private String Question;
+    int x = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +54,7 @@ public class QuestionSection extends AppCompatActivity {
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                int x = 0;
+
                 Toast.makeText(QuestionSection.this, dataSnapshot.getKey().toString(), Toast.LENGTH_SHORT).show();
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     Toast.makeText(QuestionSection.this, "Inside Child!", Toast.LENGTH_SHORT).show();
@@ -64,8 +66,8 @@ public class QuestionSection extends AppCompatActivity {
                     Toast.makeText(QuestionSection.this, "Question Added!", Toast.LENGTH_SHORT).show();
                     Log.i("myDataSet",myDataset[x].toString());
                     x=x+1;
-                    QuestionsView.setAdapter(customAdapter);
                 }
+                QuestionsView.setAdapter(customAdapter);
             }
 
             @Override
@@ -124,5 +126,9 @@ public class QuestionSection extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+    }
 }
 
