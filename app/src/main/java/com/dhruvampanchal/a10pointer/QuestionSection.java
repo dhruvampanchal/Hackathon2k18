@@ -33,7 +33,7 @@ import java.util.List;
 public class QuestionSection extends AppCompatActivity {
 
 
-    private ArrayList<String> myDataset = new ArrayList<String>();
+    private String[] myDataset = new String[10];
     private DatabaseReference myRef;
     private ListView QuestionsView;
     private String Question;
@@ -43,10 +43,11 @@ public class QuestionSection extends AppCompatActivity {
         setContentView(R.layout.activity_question_section);
 
         //TODO:Add info into DataSet.
+        QuestionsView = (ListView) findViewById(R.id.QList);
+
+        final CustomAdapter customAdapter = new CustomAdapter();
 
         myRef = FirebaseDatabase.getInstance().getReference().child("subjects").child("physics");
-
-        myDataset.clear();
 
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -58,11 +59,12 @@ public class QuestionSection extends AppCompatActivity {
                     Log.i("CHILD ACTIVITY", child.getKey().toString());
 
                     //Adding to myDataset
-                    myDataset.add(x,child.getValue().toString());
+                    myDataset[x] = child.getValue().toString();
                     Log.i("CHILD Value", child.getValue().toString());
                     Toast.makeText(QuestionSection.this, "Question Added!", Toast.LENGTH_SHORT).show();
-                    Log.i("myDataSet",myDataset.get(x).toString());
+                    Log.i("myDataSet",myDataset[x].toString());
                     x=x+1;
+                    QuestionsView.setAdapter(customAdapter);
                 }
             }
 
@@ -88,19 +90,17 @@ public class QuestionSection extends AppCompatActivity {
         });
 
 
-        QuestionsView = (ListView) findViewById(R.id.QList);
 
-        CustomAdapter customAdapter = new CustomAdapter();
-        QuestionsView.setAdapter(customAdapter);
+
 
 
 
     }
 
-    class CustomAdapter extends BaseAdapter{
+    public class CustomAdapter extends BaseAdapter{
         @Override
         public int getCount() {
-            return myDataset.size();
+            return myDataset.length;
         }
 
         @Override
@@ -118,7 +118,7 @@ public class QuestionSection extends AppCompatActivity {
             convertView = getLayoutInflater().inflate(R.layout.listitem, null);
 
             TextView Questions = (TextView) convertView.findViewById(R.id.TVText);
-            Questions.setText(myDataset.get(position));
+            Questions.setText(myDataset[position]);
 
             return convertView;
         }
