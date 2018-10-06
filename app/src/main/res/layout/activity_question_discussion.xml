@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".QuestionDiscussion">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TEST"
+        android:textSize="30sp"
+        android:id="@+id/questionview"
+        android:layout_margin="5dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/questionview"
+        android:layout_margin="2dp"
+        android:id="@+id/descriptionview"/>
+
+    <ListView
+        android:id="@+id/answerview"
+        android:layout_width="match_parent"
+        android:layout_height="385dp"
+        android:layout_below="@+id/descriptionview"
+        android:layout_marginTop="5dp"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/AnswerBtn"
+        android:layout_below="@id/answerview"
+        android:text="Add Answer"/>
+
+</RelativeLayout>

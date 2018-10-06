@@ -1,5 +1,6 @@
 package com.dhruvampanchal.a10pointer;
 
+import android.content.Intent;
 import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -34,8 +36,11 @@ import java.util.List;
 
 public class QuestionSection extends AppCompatActivity {
 
+    Intent intent = getIntent();
+    String subject = intent.getStringExtra("courseName");
 
     private String[] myDataset = new String[10];
+    private ArrayList<String> ids = new ArrayList<String>();
     private DatabaseReference myRef;
     private ListView QuestionsView;
     private String Question;
@@ -50,23 +55,29 @@ public class QuestionSection extends AppCompatActivity {
 
         final CustomAdapter customAdapter = new CustomAdapter();
 
-        myRef = FirebaseDatabase.getInstance().getReference().child("subjects").child("physics");
+        myRef = FirebaseDatabase.getInstance().getReference().child("subjects").child(subject);
 
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
+                String value = dataSnapshot.getValue(String.class);
+                ids.add(value);
+
                 Toast.makeText(QuestionSection.this, dataSnapshot.getKey().toString(), Toast.LENGTH_SHORT).show();
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     Toast.makeText(QuestionSection.this, "Inside Child!", Toast.LENGTH_SHORT).show();
                     Log.i("CHILD ACTIVITY", child.getKey().toString());
+                    if (child.getKey().toString() == "Question")
+                    {
+                        //Adding to myDataset
+                        myDataset[x] = child.getValue().toString();
+                        Log.i("CHILD Value", child.getValue().toString());
+                        Toast.makeText(QuestionSection.this, "Question Added!", Toast.LENGTH_SHORT).show();
+                        Log.i("myDataSet",myDataset[x].toString());
+                        x=x+1;
+                    }
 
-                    //Adding to myDataset
-                    myDataset[x] = child.getValue().toString();
-                    Log.i("CHILD Value", child.getValue().toString());
-                    Toast.makeText(QuestionSection.this, "Question Added!", Toast.LENGTH_SHORT).show();
-                    Log.i("myDataSet",myDataset[x].toString());
-                    x=x+1;
                 }
                 QuestionsView.setAdapter(customAdapter);
             }
@@ -92,13 +103,20 @@ public class QuestionSection extends AppCompatActivity {
             }
         });
 
+        QuestionsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(QuestionSection.this, QuestionDiscussion.class);
+                String idsend = ids.get(position);
+                intent.putExtra("id", idsend);
+                intent.putExtra("subject", subject);
+                startActivity(intent);
 
-
-
-
-
-
+            }
+        });
     }
+
+
 
     public class CustomAdapter extends BaseAdapter{
         @Override
@@ -135,12 +153,12 @@ public class QuestionSection extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        if (id == "Search")
-        {
-
+        switch (item.getItemId()) {
+            case R.id.Search:
+                return true;
         }
+        return true;
     }
 }
 
